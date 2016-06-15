@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10117"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
+            <connections>
+                <outlet property="delegate" destination="Voe-Tx-rLC" id="GzC-gU-4Uq"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customObject id="Voe-Tx-rLC" customClass="AppDelegate">
+            <connections>
+                <outlet property="IPv4MenuItem" destination="SHr-Tv-8C7" id="OcA-oi-f1L"/>
+                <outlet property="IPv6MenuItem" destination="UXF-Eb-7yh" id="1tW-PU-Agf"/>
+                <outlet property="descriptionMenuItem" destination="q2z-mg-kfC" id="Ymn-by-tXn"/>
+                <outlet property="detailMenuSeparator" destination="CvL-k1-C8q" id="nFW-FL-2IO"/>
+                <outlet property="domainMenuItem" destination="h6T-ur-YcT" id="2Rf-iu-Uj0"/>
+                <outlet property="mainMenu" destination="y8b-kQ-4Jq" id="pvA-dt-fGX"/>
+                <outlet property="refreshIntervalMenuItem" destination="qDg-ZW-uej" id="1bN-lg-ciF"/>
+                <outlet property="refreshMenuSeparator" destination="kL7-uQ-wFH" id="7Dt-wa-6r2"/>
+                <outlet property="refreshTimeoutMenuItem" destination="A1f-7L-fdI" id="8CQ-yh-kaB"/>
+                <outlet property="routerMenuItem" destination="MTh-t8-JHg" id="QYX-ha-nuT"/>
+            </connections>
+        </customObject>
+        <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
+        <menu id="y8b-kQ-4Jq">
+            <items>
+                <menuItem title="Offline" enabled="NO" id="q2z-mg-kfC">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                </menuItem>
+                <menuItem isSeparatorItem="YES" id="CvL-k1-C8q"/>
+                <menuItem title="Router: Unreachable" hidden="YES" enabled="NO" id="MTh-t8-JHg">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                </menuItem>
+                <menuItem title="IPv4: Unreachable" hidden="YES" enabled="NO" id="SHr-Tv-8C7">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                </menuItem>
+                <menuItem title="IPv6: Unreachable" hidden="YES" enabled="NO" id="UXF-Eb-7yh">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                </menuItem>
+                <menuItem title="Domain: Unreachable" hidden="YES" enabled="NO" id="h6T-ur-YcT">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                </menuItem>
+                <menuItem isSeparatorItem="YES" hidden="YES" id="kL7-uQ-wFH"/>
+                <menuItem title="Refresh Interval" hidden="YES" id="qDg-ZW-uej">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <menu key="submenu" title="Refresh Interval" id="4Pk-ad-ZuR">
+                        <items>
+                            <menuItem title="1 second" tag="1" id="PVe-54-k6Y">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="refreshInterval:" target="Voe-Tx-rLC" id="6H9-rn-gJr"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="3 seconds" tag="3" id="aIh-1k-9sK">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="refreshInterval:" target="Voe-Tx-rLC" id="eLa-Uq-27r"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="5 seconds" tag="5" id="tq9-CY-fdz">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="refreshInterval:" target="Voe-Tx-rLC" id="SL6-wL-KS5"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="10 seconds" tag="10" id="aV0-2W-gjL">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="refreshInterval:" target="Voe-Tx-rLC" id="eq2-ML-e11"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="30 seconds" tag="30" id="DAp-yV-8i5">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="refreshInterval:" target="Voe-Tx-rLC" id="hYV-11-pAg"/>
+                                </connections>
+                            </menuItem>
+                        </items>
+                    </menu>
+                </menuItem>
+                <menuItem title="Refresh Timeout" hidden="YES" id="A1f-7L-fdI">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <menu key="submenu" title="Refresh Timeout" id="M3z-pY-316">
+                        <items>
+                            <menuItem title="150 milliseconds" tag="150" id="rnO-Yw-cG4">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="refreshTimeout:" target="Voe-Tx-rLC" id="8Ua-s8-7sp"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="300 milliseconds" tag="300" id="Svc-ZZ-Shi">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="refreshTimeout:" target="Voe-Tx-rLC" id="hYZ-Zd-h3Y"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="500 milliseconds" tag="500" id="wIH-mL-2y0">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="refreshTimeout:" target="Voe-Tx-rLC" id="hJ0-dx-L6A"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="1000 milliseconds" tag="1000" id="cAm-q7-hTu">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="refreshTimeout:" target="Voe-Tx-rLC" id="kIy-Li-1ac"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="3000 milliseconds" tag="3000" id="rhy-Se-3Jp">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="refreshTimeout:" target="Voe-Tx-rLC" id="nuM-On-EFK"/>
+                                </connections>
+                            </menuItem>
+                        </items>
+                    </menu>
+                </menuItem>
+                <menuItem isSeparatorItem="YES" id="wFh-mh-xZX"/>
+                <menuItem title="Quit" id="x9m-ze-Xjb">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="terminate:" target="-1" id="PXd-Tv-N9K"/>
+                    </connections>
+                </menuItem>
+            </items>
+        </menu>
+    </objects>
+</document>

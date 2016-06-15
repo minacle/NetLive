@@ -1,0 +1,298 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		668D8EAE1CFE15DD00472CDF /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 668D8EAD1CFE15DD00472CDF /* AppDelegate.m */; };
+		668D8EB11CFE15DD00472CDF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 668D8EB01CFE15DD00472CDF /* main.m */; };
+		668D8EB31CFE15DD00472CDF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 668D8EB21CFE15DD00472CDF /* Assets.xcassets */; };
+		668D8EB61CFE15DD00472CDF /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 668D8EB41CFE15DD00472CDF /* MainMenu.xib */; };
+		66C3CE0B1D117C0000BDD75C /* netlive.c in Sources */ = {isa = PBXBuildFile; fileRef = 661364D21D002A4C00624265 /* netlive.c */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		661364D21D002A4C00624265 /* netlive.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = netlive.c; sourceTree = "<group>"; };
+		661364DE1D005F3700624265 /* netlive.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = netlive.h; sourceTree = "<group>"; };
+		666AC8791D120839002F5098 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		666AC87B1D120848002F5098 /* COPYING */ = {isa = PBXFileReference; lastKnownFileType = text; path = COPYING; sourceTree = "<group>"; };
+		666AC87C1D120864002F5098 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		666AC87D1D120D05002F5098 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		668D8EA91CFE15DC00472CDF /* NetLive.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NetLive.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		668D8EAC1CFE15DD00472CDF /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		668D8EAD1CFE15DD00472CDF /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		668D8EB01CFE15DD00472CDF /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		668D8EB21CFE15DD00472CDF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		668D8EB51CFE15DD00472CDF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		668D8EB71CFE15DD00472CDF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		668D8EA61CFE15DC00472CDF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		668D8EA01CFE15DC00472CDF = {
+			isa = PBXGroup;
+			children = (
+				666AC87D1D120D05002F5098 /* .gitignore */,
+				666AC87B1D120848002F5098 /* COPYING */,
+				666AC8791D120839002F5098 /* LICENSE */,
+				666AC87C1D120864002F5098 /* README.md */,
+				668D8EAB1CFE15DC00472CDF /* NetLive */,
+				668D8EAA1CFE15DC00472CDF /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		668D8EAA1CFE15DC00472CDF /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				668D8EA91CFE15DC00472CDF /* NetLive.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		668D8EAB1CFE15DC00472CDF /* NetLive */ = {
+			isa = PBXGroup;
+			children = (
+				668D8EB01CFE15DD00472CDF /* main.m */,
+				661364DE1D005F3700624265 /* netlive.h */,
+				661364D21D002A4C00624265 /* netlive.c */,
+				668D8EAC1CFE15DD00472CDF /* AppDelegate.h */,
+				668D8EAD1CFE15DD00472CDF /* AppDelegate.m */,
+				668D8EB21CFE15DD00472CDF /* Assets.xcassets */,
+				668D8EB41CFE15DD00472CDF /* MainMenu.xib */,
+				668D8EB71CFE15DD00472CDF /* Info.plist */,
+			);
+			path = NetLive;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		668D8EA81CFE15DC00472CDF /* NetLive */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 668D8EBA1CFE15DD00472CDF /* Build configuration list for PBXNativeTarget "NetLive" */;
+			buildPhases = (
+				668D8EA51CFE15DC00472CDF /* Sources */,
+				668D8EA61CFE15DC00472CDF /* Frameworks */,
+				668D8EA71CFE15DC00472CDF /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = NetLive;
+			productName = NetLive;
+			productReference = 668D8EA91CFE15DC00472CDF /* NetLive.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		668D8EA11CFE15DC00472CDF /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0730;
+				ORGANIZATIONNAME = "Mayu Laierlence";
+				TargetAttributes = {
+					668D8EA81CFE15DC00472CDF = {
+						CreatedOnToolsVersion = 7.3.1;
+						SystemCapabilities = {
+							com.apple.Sandbox = {
+								enabled = 0;
+							};
+						};
+					};
+				};
+			};
+			buildConfigurationList = 668D8EA41CFE15DC00472CDF /* Build configuration list for PBXProject "NetLive" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 668D8EA01CFE15DC00472CDF;
+			productRefGroup = 668D8EAA1CFE15DC00472CDF /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				668D8EA81CFE15DC00472CDF /* NetLive */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		668D8EA71CFE15DC00472CDF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				668D8EB31CFE15DD00472CDF /* Assets.xcassets in Resources */,
+				668D8EB61CFE15DD00472CDF /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		668D8EA51CFE15DC00472CDF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				66C3CE0B1D117C0000BDD75C /* netlive.c in Sources */,
+				668D8EB11CFE15DD00472CDF /* main.m in Sources */,
+				668D8EAE1CFE15DD00472CDF /* AppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		668D8EB41CFE15DD00472CDF /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				668D8EB51CFE15DD00472CDF /* Base */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		668D8EB81CFE15DD00472CDF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx10.10;
+			};
+			name = Debug;
+		};
+		668D8EB91CFE15DD00472CDF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx10.10;
+			};
+			name = Release;
+		};
+		668D8EBB1CFE15DD00472CDF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = NetLive/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = mayu.laierlence.macos.netlive;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		668D8EBC1CFE15DD00472CDF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = NetLive/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = mayu.laierlence.macos.netlive;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		668D8EA41CFE15DC00472CDF /* Build configuration list for PBXProject "NetLive" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				668D8EB81CFE15DD00472CDF /* Debug */,
+				668D8EB91CFE15DD00472CDF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		668D8EBA1CFE15DD00472CDF /* Build configuration list for PBXNativeTarget "NetLive" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				668D8EBB1CFE15DD00472CDF /* Debug */,
+				668D8EBC1CFE15DD00472CDF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 668D8EA11CFE15DC00472CDF /* Project object */;
+}
