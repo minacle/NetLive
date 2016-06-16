@@ -1,0 +1,19 @@
+body {
+    text-align: center;
+    font-family: 'Lora', serif;
+    font-style: italic;
+}
+
+h1 {
+    margin: 1em auto 0;
+    font-size: 72px;
+}
+
+p, div {
+    margin: 2em auto;
+    font-size: 24px;
+}
+
+img {
+    zoom: 50%;
+}
