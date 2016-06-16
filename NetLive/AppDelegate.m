@@ -98,6 +98,7 @@ void netlive_handler(uint16_t state) {
 }
 
 - (void)menuWillOpen:(NSMenu *)menu {
+    BOOL showAllMenu = NO;
     if ([NSEvent modifierFlags] & NSAlternateKeyMask) {
         [[self detailMenuSeparator] setHidden:NO];
         [[self routerMenuItem] setHidden:NO];
@@ -107,8 +108,14 @@ void netlive_handler(uint16_t state) {
         [[self refreshMenuSeparator] setHidden:NO];
         [[self refreshIntervalMenuItem] setHidden:NO];
         [[self refreshTimeoutMenuItem] setHidden:NO];
+        showAllMenu = YES;
     }
-    else {
+    else if ([NSEvent pressedMouseButtons] & 2) {
+        [[self refreshMenuSeparator] setHidden:NO];
+        [[self refreshIntervalMenuItem] setHidden:NO];
+        [[self refreshTimeoutMenuItem] setHidden:NO];
+    }
+    if (!showAllMenu) {
         if (lastState & NETLIVE_TIMEOUT || ~lastState & NETLIVE_ROUTER_AVAILABLE || ~lastState & NETLIVE_ROUTER_REACHABLE) {
             [[self detailMenuSeparator] setHidden:NO];
             [[self routerMenuItem] setHidden:NO];
