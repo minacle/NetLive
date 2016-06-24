@@ -90,6 +90,7 @@ void netlive_handler(uint16_t state) {
     [self setRefreshTimeout:0.5];
     [self setRefreshInterval:5];
     [self refresh:nil];
+    [self setIconWithState:0];
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
