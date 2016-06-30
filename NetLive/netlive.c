@@ -47,83 +47,163 @@ static u_short in_cksum(u_short *addr, int len) {
     return answer;
 }
 
-static bool ip_icmp_ping(const char *dest) {
-    bool reachability = false;
-    struct icmp icmp;
-    icmp.icmp_type = ICMP_ECHO;
-    icmp.icmp_code = 0;
-    icmp.icmp_cksum = 0;
-    icmp.icmp_id = getpid();
-    icmp.icmp_seq = htons(seq++);
-    icmp.icmp_cksum = in_cksum((u_short *)&icmp, ICMP_MINLEN);
-    struct sockaddr_in sockaddr;
-    sockaddr.sin_family = AF_INET;
-    sockaddr.sin_port = htons(0);
-    sockaddr.sin_addr.s_addr = inet_addr(dest);
-    socklen_t addrlen = sizeof(struct sockaddr_in);
-    int s = socket(PF_INET, SOCK_DGRAM, IPPROTO_ICMP);
-    struct timeval timeval;
-    timeval.tv_sec = 3;
-    setsockopt(s, SOL_SOCKET, SO_SNDTIMEO, &timeval, sizeof(struct timeval));
-    setsockopt(s, SOL_SOCKET, SO_RCVTIMEO, &timeval, sizeof(struct timeval));
-    if (sendto(s, &icmp, ICMP_MINLEN, 0, (const struct sockaddr *)&sockaddr, addrlen) > 0)
-        if (recvfrom(s, &icmp, ICMP_MINLEN, 0, (struct sockaddr *)&sockaddr, &addrlen) > 0) {
-            if (icmp.icmp_id == getpid())
-            reachability = true;
-        }
-    close(s);
-    return reachability;
-}
-
-static bool ip6_icmp_ping(const char *dest) {
-    bool reachability = false;
-    struct icmp icmp;
-    icmp.icmp_type = ICMP_ECHO;
-    icmp.icmp_code = 0;
-    icmp.icmp_cksum = 0;
-    icmp.icmp_id = getpid();
-    icmp.icmp_seq = htons(seq++);
-    icmp.icmp_cksum = in_cksum((u_short *)&icmp, ICMP_MINLEN);
-    struct sockaddr_in6 sockaddr;
-    sockaddr.sin6_family = AF_INET6;
-    sockaddr.sin6_port = htons(0);
-    struct in6_addr addr;
-    inet_pton(AF_INET6, dest, &addr);
-    sockaddr.sin6_addr = addr;
-    socklen_t addrlen = sizeof(struct sockaddr_in6);
-    int s = socket(PF_INET, SOCK_DGRAM, IPPROTO_ICMP);
-    struct timeval timeval;
-    timeval.tv_sec = 3;
-    setsockopt(s, SOL_SOCKET, SO_SNDTIMEO, &timeval, sizeof(struct timeval));
-    setsockopt(s, SOL_SOCKET, SO_RCVTIMEO, &timeval, sizeof(struct timeval));
-    if (sendto(s, &icmp, ICMP_MINLEN, 0, (const struct sockaddr *)&sockaddr, addrlen) > 0)
-        if (recvfrom(s, &icmp, ICMP_MINLEN, 0, (struct sockaddr *)&sockaddr, &addrlen) > 0)
-            reachability = true;
-    close(s);
-    return reachability;
-}
-
 static void *dorouter(void *arg) {
-    if (state & NETLIVE_IPV4_AVAILABLE && ip_icmp_ping(routerip) || state & NETLIVE_IPV6_AVAILABLE && ip6_icmp_ping(routerip))
-        state |= NETLIVE_ROUTER_REACHABLE;
+    struct icmp icmp;
+    if (state & NETLIVE_IPV4_AVAILABLE) {
+        struct icmp icmp;
+        icmp.icmp_type = ICMP_ECHO;
+        icmp.icmp_code = 0;
+        icmp.icmp_cksum = 0;
+        icmp.icmp_id = getpid();
+        icmp.icmp_seq = htons(seq++);
+        icmp.icmp_cksum = in_cksum((u_short *)&icmp, ICMP_MINLEN);
+        struct sockaddr_in sockaddr;
+        sockaddr.sin_family = AF_INET;
+        sockaddr.sin_port = htons(0);
+        sockaddr.sin_addr.s_addr = inet_addr(routerip);
+        socklen_t addrlen = sizeof(struct sockaddr_in);
+        int s = socket(PF_INET, SOCK_DGRAM, IPPROTO_ICMP);
+        struct timeval timeval;
+        timeval.tv_sec = 3;
+        setsockopt(s, SOL_SOCKET, SO_SNDTIMEO, &timeval, sizeof(struct timeval));
+        setsockopt(s, SOL_SOCKET, SO_RCVTIMEO, &timeval, sizeof(struct timeval));
+        if (sendto(s, &icmp, ICMP_MINLEN, 0, (const struct sockaddr *)&sockaddr, addrlen) > 0)
+            if (recvfrom(s, &icmp, ICMP_MINLEN, 0, (struct sockaddr *)&sockaddr, &addrlen) > 0)
+                state |= NETLIVE_ROUTER_REACHABLE;
+        close(s);
+    }
+    else if (state & NETLIVE_IPV6_AVAILABLE) {
+        icmp.icmp_type = ICMP_ECHO;
+        icmp.icmp_code = 0;
+        icmp.icmp_cksum = 0;
+        icmp.icmp_id = getpid();
+        icmp.icmp_seq = htons(seq++);
+        icmp.icmp_cksum = in_cksum((u_short *)&icmp, ICMP_MINLEN);
+        struct sockaddr_in6 sockaddr;
+        sockaddr.sin6_family = AF_INET6;
+        sockaddr.sin6_port = htons(0);
+        struct in6_addr addr;
+        inet_pton(AF_INET6, routerip6, &addr);
+        sockaddr.sin6_addr = addr;
+        socklen_t addrlen = sizeof(struct sockaddr_in6);
+        int s = socket(PF_INET, SOCK_DGRAM, IPPROTO_ICMP);
+        struct timeval timeval;
+        timeval.tv_sec = 3;
+        setsockopt(s, SOL_SOCKET, SO_SNDTIMEO, &timeval, sizeof(struct timeval));
+        setsockopt(s, SOL_SOCKET, SO_RCVTIMEO, &timeval, sizeof(struct timeval));
+        if (sendto(s, &icmp, ICMP_MINLEN, 0, (const struct sockaddr *)&sockaddr, addrlen) > 0)
+            if (recvfrom(s, &icmp, ICMP_MINLEN, 0, (struct sockaddr *)&sockaddr, &addrlen) > 0)
+                state |= NETLIVE_ROUTER_REACHABLE;
+        close(s);
+    }
     return NULL;
 }
 
 static void *doipv4(void *arg) {
-    if (state & NETLIVE_IPV4_AVAILABLE && ip_icmp_ping(remoteip))
-        state |= NETLIVE_IPV4_REACHABLE;
+    if (state & NETLIVE_IPV4_AVAILABLE) {
+        struct icmp icmp;
+        icmp.icmp_type = ICMP_ECHO;
+        icmp.icmp_code = 0;
+        icmp.icmp_cksum = 0;
+        icmp.icmp_id = getpid();
+        icmp.icmp_seq = htons(seq++);
+        icmp.icmp_cksum = in_cksum((u_short *)&icmp, ICMP_MINLEN);
+        struct sockaddr_in sockaddr;
+        sockaddr.sin_family = AF_INET;
+        sockaddr.sin_port = htons(0);
+        sockaddr.sin_addr.s_addr = inet_addr(remoteip);
+        socklen_t addrlen = sizeof(struct sockaddr_in);
+        int s = socket(PF_INET, SOCK_DGRAM, IPPROTO_ICMP);
+        struct timeval timeval;
+        timeval.tv_sec = 3;
+        setsockopt(s, SOL_SOCKET, SO_SNDTIMEO, &timeval, sizeof(struct timeval));
+        setsockopt(s, SOL_SOCKET, SO_RCVTIMEO, &timeval, sizeof(struct timeval));
+        if (sendto(s, &icmp, ICMP_MINLEN, 0, (const struct sockaddr *)&sockaddr, addrlen) > 0)
+            if (recvfrom(s, &icmp, ICMP_MINLEN, 0, (struct sockaddr *)&sockaddr, &addrlen) > 0)
+                state |= NETLIVE_IPV4_REACHABLE;
+        close(s);
+    }
     return NULL;
 }
 
 static void *doipv6(void *arg) {
-    if (state & NETLIVE_IPV6_AVAILABLE && ip6_icmp_ping(remoteip))
-        state |= NETLIVE_IPV6_REACHABLE;
+    if (state & NETLIVE_IPV6_AVAILABLE) {
+        struct icmp icmp;
+        icmp.icmp_type = ICMP_ECHO;
+        icmp.icmp_code = 0;
+        icmp.icmp_cksum = 0;
+        icmp.icmp_id = getpid();
+        icmp.icmp_seq = htons(seq++);
+        icmp.icmp_cksum = in_cksum((u_short *)&icmp, ICMP_MINLEN);
+        struct sockaddr_in6 sockaddr;
+        sockaddr.sin6_family = AF_INET6;
+        sockaddr.sin6_port = htons(0);
+        struct in6_addr addr;
+        inet_pton(AF_INET6, remoteip6, &addr);
+        sockaddr.sin6_addr = addr;
+        socklen_t addrlen = sizeof(struct sockaddr_in6);
+        int s = socket(PF_INET, SOCK_DGRAM, IPPROTO_ICMP);
+        struct timeval timeval;
+        timeval.tv_sec = 3;
+        setsockopt(s, SOL_SOCKET, SO_SNDTIMEO, &timeval, sizeof(struct timeval));
+        setsockopt(s, SOL_SOCKET, SO_RCVTIMEO, &timeval, sizeof(struct timeval));
+        if (sendto(s, &icmp, ICMP_MINLEN, 0, (const struct sockaddr *)&sockaddr, addrlen) > 0)
+            if (recvfrom(s, &icmp, ICMP_MINLEN, 0, (struct sockaddr *)&sockaddr, &addrlen) > 0)
+                state |= NETLIVE_IPV6_REACHABLE;
+        close(s);
+    }
     return NULL;
 }
 
 static void *dodomain(void *arg) {
-    if (state & NETLIVE_IPV4_AVAILABLE && ip_icmp_ping(remotedomain) || state & NETLIVE_IPV6_AVAILABLE && ip6_icmp_ping(remotedomain))
-        state |= NETLIVE_DOMAIN_REACHABLE;
+    struct icmp icmp;
+    if (state & NETLIVE_IPV4_AVAILABLE) {
+        struct icmp icmp;
+        icmp.icmp_type = ICMP_ECHO;
+        icmp.icmp_code = 0;
+        icmp.icmp_cksum = 0;
+        icmp.icmp_id = getpid();
+        icmp.icmp_seq = htons(seq++);
+        icmp.icmp_cksum = in_cksum((u_short *)&icmp, ICMP_MINLEN);
+        struct sockaddr_in sockaddr;
+        sockaddr.sin_family = AF_INET;
+        sockaddr.sin_port = htons(0);
+        sockaddr.sin_addr.s_addr = inet_addr(remotedomain);
+        socklen_t addrlen = sizeof(struct sockaddr_in);
+        int s = socket(PF_INET, SOCK_DGRAM, IPPROTO_ICMP);
+        struct timeval timeval;
+        timeval.tv_sec = 3;
+        setsockopt(s, SOL_SOCKET, SO_SNDTIMEO, &timeval, sizeof(struct timeval));
+        setsockopt(s, SOL_SOCKET, SO_RCVTIMEO, &timeval, sizeof(struct timeval));
+        if (sendto(s, &icmp, ICMP_MINLEN, 0, (const struct sockaddr *)&sockaddr, addrlen) > 0)
+            if (recvfrom(s, &icmp, ICMP_MINLEN, 0, (struct sockaddr *)&sockaddr, &addrlen) > 0)
+                state |= NETLIVE_DOMAIN_REACHABLE;
+        close(s);
+    }
+    else if (state & NETLIVE_IPV6_AVAILABLE) {
+        icmp.icmp_type = ICMP_ECHO;
+        icmp.icmp_code = 0;
+        icmp.icmp_cksum = 0;
+        icmp.icmp_id = getpid();
+        icmp.icmp_seq = htons(seq++);
+        icmp.icmp_cksum = in_cksum((u_short *)&icmp, ICMP_MINLEN);
+        struct sockaddr_in6 sockaddr;
+        sockaddr.sin6_family = AF_INET6;
+        sockaddr.sin6_port = htons(0);
+        struct in6_addr addr;
+        inet_pton(AF_INET6, remotedomain, &addr);
+        sockaddr.sin6_addr = addr;
+        socklen_t addrlen = sizeof(struct sockaddr_in6);
+        int s = socket(PF_INET, SOCK_DGRAM, IPPROTO_ICMP);
+        struct timeval timeval;
+        timeval.tv_sec = 3;
+        setsockopt(s, SOL_SOCKET, SO_SNDTIMEO, &timeval, sizeof(struct timeval));
+        setsockopt(s, SOL_SOCKET, SO_RCVTIMEO, &timeval, sizeof(struct timeval));
+        if (sendto(s, &icmp, ICMP_MINLEN, 0, (const struct sockaddr *)&sockaddr, addrlen) > 0)
+            if (recvfrom(s, &icmp, ICMP_MINLEN, 0, (struct sockaddr *)&sockaddr, &addrlen) > 0)
+                state |= NETLIVE_DOMAIN_REACHABLE;
+        close(s);
+    }
     return NULL;
 }
 
