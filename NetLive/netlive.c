@@ -67,8 +67,10 @@ static bool ip_icmp_ping(const char *dest) {
     setsockopt(s, SOL_SOCKET, SO_SNDTIMEO, &timeval, sizeof(struct timeval));
     setsockopt(s, SOL_SOCKET, SO_RCVTIMEO, &timeval, sizeof(struct timeval));
     if (sendto(s, &icmp, ICMP_MINLEN, 0, (const struct sockaddr *)&sockaddr, addrlen) > 0)
-        if (recvfrom(s, &icmp, ICMP_MINLEN, 0, (struct sockaddr *)&sockaddr, &addrlen) > 0)
+        if (recvfrom(s, &icmp, ICMP_MINLEN, 0, (struct sockaddr *)&sockaddr, &addrlen) > 0) {
+            if (icmp.icmp_id == getpid())
             reachability = true;
+        }
     close(s);
     return reachability;
 }
@@ -85,9 +87,9 @@ static bool ip6_icmp_ping(const char *dest) {
     struct sockaddr_in6 sockaddr;
     sockaddr.sin6_family = AF_INET6;
     sockaddr.sin6_port = htons(0);
-    struct in6_addr addr6;
-    inet_pton(AF_INET6, dest, &addr6);
-    sockaddr.sin6_addr = addr6;
+    struct in6_addr addr;
+    inet_pton(AF_INET6, dest, &addr);
+    sockaddr.sin6_addr = addr;
     socklen_t addrlen = sizeof(struct sockaddr_in6);
     int s = socket(PF_INET, SOCK_DGRAM, IPPROTO_ICMP);
     struct timeval timeval;
@@ -114,7 +116,7 @@ static void *doipv4(void *arg) {
 }
 
 static void *doipv6(void *arg) {
-    if (state & NETLIVE_IPV6_AVAILABLE && ip_icmp_ping(remoteip))
+    if (state & NETLIVE_IPV6_AVAILABLE && ip6_icmp_ping(remoteip))
         state |= NETLIVE_IPV6_REACHABLE;
     return NULL;
 }
