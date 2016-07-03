@@ -1,3 +1,7 @@
+html, body {
+    margin: 0;
+}
+
 body {
     text-align: center;
     font-family: 'Lora', serif;
@@ -5,15 +9,31 @@ body {
 }
 
 h1 {
-    margin: 1em auto 0;
+    margin: .5em auto .4em;
     font-size: 72px;
 }
 
-p, div {
-    margin: 2em auto;
+p {
+    margin: auto .5em 2em;
     font-size: 24px;
 }
 
 img {
     zoom: 50%;
+}
+
+.pattern {
+    background-image: url(pattern.gif);
+    box-sizing: border-box;
+    overflow: auto;
+}
+
+.bar {
+    background-image: url(bar.png);
+    background-size: 1px 47px;
+    background-repeat: repeat-x;
+}
+
+.github {
+    margin: 2em auto;
 }
