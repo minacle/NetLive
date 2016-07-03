@@ -11,6 +11,7 @@ NSString *statusStringFromState(BOOL available, BOOL reachable, BOOL timeout) {
 
 @property IBOutlet NSMenu *mainMenu;
 @property IBOutlet NSMenuItem *descriptionMenuItem;
+@property IBOutlet NSMenuItem *pingMenuItem;
 @property IBOutlet NSMenuItem *detailMenuSeparator;
 @property IBOutlet NSMenuItem *routerMenuItem;
 @property IBOutlet NSMenuItem *IPv4MenuItem;
@@ -31,12 +32,12 @@ NSString *statusStringFromState(BOOL available, BOOL reachable, BOOL timeout) {
 @property NSTimeInterval refreshInterval;
 @property NSTimeInterval refreshTimeout;
 
-- (void)refreshWithState:(uint16_t)state;
+- (void)refreshWithResult:(netlive_result_t)result;
 
 @end
 
-void netlive_handler(uint16_t state) {
-    [(AppDelegate *)[[NSApplication sharedApplication] delegate] refreshWithState:state];
+void netlive_handler(netlive_result_t result) {
+    [(AppDelegate *)[[NSApplication sharedApplication] delegate] refreshWithResult:result];
 }
 
 @implementation AppDelegate
@@ -44,7 +45,7 @@ void netlive_handler(uint16_t state) {
 {
     NSTimeInterval refreshInterval;
     NSTimeInterval refreshTimeout;
-    uint16_t lastState;
+    netlive_result_t lastResult;
 }
 
 - (NSTimeInterval)refreshInterval {
@@ -87,10 +88,10 @@ void netlive_handler(uint16_t state) {
     [[self mainMenu] setDelegate:self];
     [statusItem setMenu:[self mainMenu]];
     [self setStatusItem:statusItem];
-    [self setRefreshTimeout:0.5];
+    [self setRefreshTimeout:0.15];
     [self setRefreshInterval:5];
     [self refresh:nil];
-    [self setIconWithState:0];
+    [[statusItem button] setImage:[self offlineIcon]];
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
@@ -117,7 +118,8 @@ void netlive_handler(uint16_t state) {
         [[self refreshTimeoutMenuItem] setHidden:NO];
     }
     if (!showAllMenu) {
-        if (lastState & NETLIVE_TIMEOUT || ~lastState & NETLIVE_ROUTER_AVAILABLE || ~lastState & NETLIVE_ROUTER_REACHABLE) {
+        unsigned short lastState = lastResult.state;
+        if (~lastState & NETLIVE_ROUTER_AVAILABLE || ~lastState & NETLIVE_ROUTER_REACHABLE) {
             [[self detailMenuSeparator] setHidden:NO];
             [[self routerMenuItem] setHidden:NO];
         }
@@ -148,28 +150,6 @@ void netlive_handler(uint16_t state) {
     [[self refreshTimeoutMenuItem] setHidden:YES];
 }
 
-- (void)setIconWithState:(uint16_t)state {
-    [[self routerMenuItem] setTitle:[NSString stringWithFormat:@"Router: %@", statusStringFromState(state & NETLIVE_ROUTER_AVAILABLE, state & NETLIVE_ROUTER_REACHABLE, state & NETLIVE_TIMEOUT)]];
-    [[self IPv4MenuItem] setTitle:[NSString stringWithFormat:@"IPv4: %@", statusStringFromState(state & NETLIVE_IPV4_AVAILABLE, state & NETLIVE_IPV4_REACHABLE, state & NETLIVE_TIMEOUT)]];
-    [[self IPv6MenuItem] setTitle:[NSString stringWithFormat:@"IPv6: %@", statusStringFromState(state & NETLIVE_IPV6_AVAILABLE, state & NETLIVE_IPV6_REACHABLE, state & NETLIVE_TIMEOUT)]];
-    [[self domainMenuItem] setTitle:[NSString stringWithFormat:@"Domain: %@", statusStringFromState(YES, state & NETLIVE_DOMAIN_REACHABLE, state & NETLIVE_TIMEOUT)]];
-    NSButton *statusButton = [[self statusItem] button];
-    NSMenuItem *description = [self descriptionMenuItem];
-    if (~state & NETLIVE_TIMEOUT && state & NETLIVE_DOMAIN_REACHABLE) {
-        [description setTitle:@"Stable"];
-        [statusButton setImage:[self stableIcon]];
-    }
-    else if (state & (NETLIVE_IPV4_REACHABLE | NETLIVE_IPV6_REACHABLE)) {
-        [description setTitle:@"Unstable"];
-        [statusButton setImage:[self unstableIcon]];
-    }
-    else {
-        [description setTitle:@"Offline"];
-        [statusButton setImage:[self offlineIcon]];
-    }
-    lastState = state;
-}
-
 - (void)resetTimer {
     if ([self refreshTimer] && [[self refreshTimer] isValid])
         [[self refreshTimer] invalidate];
@@ -186,10 +166,43 @@ void netlive_handler(uint16_t state) {
     });
 }
 
-- (void)refreshWithState:(uint16_t)state {
-    if (state & NETLIVE_WAITING)
-        return;
-    [self setIconWithState:state];
+- (void)refreshWithResult:(netlive_result_t)result {
+    unsigned short state = result.state;
+    NSMenuItem *ping = [self pingMenuItem];
+    unsigned long time = 0;
+    if (state & NETLIVE_ROUTER_AVAILABLE && time < result.time.router)
+        time = result.time.router;
+    if (state & NETLIVE_IPV4_AVAILABLE && time < result.time.ipv4)
+        time = result.time.ipv4;
+    if (state & NETLIVE_IPV6_AVAILABLE && time < result.time.ipv6)
+        time = result.time.ipv6;
+    if (state & NETLIVE_DOMAIN_AVAILABLE && time < result.time.domain)
+        time = result.time.domain;
+    if (time > 0 && ~state & NETLIVE_TIMEOUT) {
+        [ping setTitle:[NSString stringWithFormat:@"%.3f ms", time / 1000.0]];
+        [ping setHidden:NO];
+    }
+    else
+        [ping setHidden:YES];
+    [[self routerMenuItem] setTitle:[NSString stringWithFormat:@"Router: %@", statusStringFromState(state & NETLIVE_ROUTER_AVAILABLE, state & NETLIVE_ROUTER_REACHABLE, result.time.router == 0)]];
+    [[self IPv4MenuItem] setTitle:[NSString stringWithFormat:@"IPv4: %@", statusStringFromState(state & NETLIVE_IPV4_AVAILABLE, state & NETLIVE_IPV4_REACHABLE, result.time.ipv4 == 0)]];
+    [[self IPv6MenuItem] setTitle:[NSString stringWithFormat:@"IPv6: %@", statusStringFromState(state & NETLIVE_IPV6_AVAILABLE, state & NETLIVE_IPV6_REACHABLE, result.time.ipv6 == 0)]];
+    [[self domainMenuItem] setTitle:[NSString stringWithFormat:@"Domain: %@", statusStringFromState(YES, state & NETLIVE_DOMAIN_REACHABLE, result.time.domain == 0)]];
+    NSButton *statusButton = [[self statusItem] button];
+    NSMenuItem *description = [self descriptionMenuItem];
+    if (~state & NETLIVE_TIMEOUT && state & NETLIVE_DOMAIN_REACHABLE && state & (NETLIVE_IPV4_REACHABLE | NETLIVE_IPV6_REACHABLE) && state & NETLIVE_ROUTER_REACHABLE) {
+        [description setTitle:@"Stable"];
+        [statusButton setImage:[self stableIcon]];
+    }
+    else if (state & NETLIVE_DOMAIN_REACHABLE || state & (NETLIVE_IPV4_REACHABLE | NETLIVE_IPV6_REACHABLE)) {
+        [description setTitle:@"Unstable"];
+        [statusButton setImage:[self unstableIcon]];
+    }
+    else {
+        [description setTitle:@"Offline"];
+        [statusButton setImage:[self offlineIcon]];
+    }
+    lastResult = result;
 }
 
 - (IBAction)refreshInterval:(id)sender {

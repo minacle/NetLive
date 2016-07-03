@@ -29,6 +29,18 @@
 
 #define NETLIVE_DUMMY NETLIVE_DOMAIN_AVAILABLE
 
+typedef struct netlive_result netlive_result_t;
+
+struct netlive_result {
+    unsigned short state;
+    struct time {
+        unsigned long router;
+        unsigned long ipv4;
+        unsigned long ipv6;
+        unsigned long domain;
+    } time;
+};
+
 void netlive_once(void);
 void netlive_cancel(void);
-void netlive_handler(uint16_t);
+void netlive_handler(netlive_result_t);
